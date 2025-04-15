@@ -123,11 +123,16 @@ def handle_message(message):
 
 
 import gspread
+import json
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Подключение к Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+creds_json = os.environ.get('GOOGLE_CREDS_JSON')
+creds_dict = json.loads(creds_json)
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
 sheet_job_seekers = client.open("MedUnion").worksheet("Job Seekers")
