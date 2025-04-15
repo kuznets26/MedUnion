@@ -9,6 +9,9 @@ class UserState(Enum):
     HIRING = 2
 
 # Initialize bot and user states
+import os
+
+API_TG = os.getenv("API_TG")
 bot = telebot.TeleBot(API_TG)
 user_states = {}
 user_data = {}
