@@ -39,7 +39,7 @@ def ask_experience(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("Больше 1 года"))
     markup.add(types.KeyboardButton("Больше трех лет"))
-    bot.send_message(message.chat.id, "Какой у вас опыт?")
+    bot.send_message(message.chat.id, "Какой у вас опыт?", reply_markup=markup)
     bot.register_next_step_handler(message, ask_schedule)
 
 def ask_schedule(message):
@@ -48,7 +48,7 @@ def ask_schedule(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("5/2"), types.KeyboardButton("2/2"))
     markup.add(types.KeyboardButton("Посменно"))
-    bot.send_message(message.chat.id, "Какой график работы вы предпочитаете?")
+    bot.send_message(message.chat.id, "Какой график работы вы предпочитаете?", reply_markup=markup)
     bot.register_next_step_handler(message, ask_rate)
 
 def ask_rate(message):
