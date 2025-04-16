@@ -173,7 +173,8 @@ def process_job_seeker_data(message):
             user_data[user_id].get('experience', ''),
             user_data[user_id].get('schedule', ''),
             user_data[user_id].get('rate', ''),
-            user_data[user_id].get('platform', '')
+            user_data[user_id].get('platform', ''),
+            user_data[user_id].get('city', '')
         ])
         bot.send_message(message.chat.id, "Спасибо за информацию! Мы обработаем ваш запрос.",
                          reply_markup=create_main_keyboard())
