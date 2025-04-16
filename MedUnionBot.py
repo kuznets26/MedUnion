@@ -31,7 +31,7 @@ def ask_specialization(message):
     user_data[user_id] = {}
     markup = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, "Какая у вас специализация?", reply_markup=markup)
-    bot.register_next_step_handler(message, ask_schedule)
+    bot.register_next_step_handler(message, ask_experience)
 
 def ask_experience(message):
     user_id = message.from_user.id
