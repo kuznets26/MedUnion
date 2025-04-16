@@ -27,7 +27,7 @@ def create_main_keyboard():
 
 def ask_specialization(message):
     user_id = message.from_user.id
-    user_data[user_id]['specialization'] = message.text
+    user_states[user_id] = UserState.SEEKING_JOB
     user_data[user_id] = {}
     markup = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, "Какая у вас специализация?", reply_markup=markup)
@@ -35,7 +35,7 @@ def ask_specialization(message):
 
 def ask_experience(message):
     user_id = message.from_user.id
-    user_data[user_id]['experience'] = message.text
+    user_data[user_id]['specialization'] = message.text
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("От 1 года до 3 лет"))
     markup.add(types.KeyboardButton("Больше трех лет"))
@@ -44,7 +44,7 @@ def ask_experience(message):
 
 def ask_schedule(message):
     user_id = message.from_user.id
-    user_data[user_id]['schedule'] = message.text
+    user_data[user_id]['experience'] = message.text
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("5/2"), types.KeyboardButton("2/2"))
     markup.add(types.KeyboardButton("Посменно"))
@@ -53,14 +53,14 @@ def ask_schedule(message):
 
 def ask_rate(message):
     user_id = message.from_user.id
-    user_data[user_id]['rate'] = message.text
+    user_data[user_id]['schedule'] = message.text
     markup = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, "Какая минимальная ставка за смену вас интересует (напишите значение в рублях)?", reply_markup=markup)
     bot.register_next_step_handler(message, ask_platform)
 
 def ask_platform(message):
     user_id = message.from_user.id
-    user_data[user_id]['platform'] = message.text
+    user_data[user_id]['rate'] = message.text
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Да"), types.KeyboardButton("Нет"))
     bot.send_message(message.chat.id, "Готовы ли вы работать через платформу?", reply_markup=markup)
@@ -68,7 +68,7 @@ def ask_platform(message):
 
 def ask_city_seeker(message):
     user_id = message.from_user.id
-    user_data[user_id]['city'] = message.text
+    user_data[user_id]['platform'] = message.text
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Москва"), types.KeyboardButton("Санкт-Петербург"))
     markup.add(types.KeyboardButton("Новосибирск"), types.KeyboardButton("Екатеринбург"))
@@ -78,6 +78,7 @@ def ask_city_seeker(message):
 
 def process_job_seeker_data(message):
     user_id = message.from_user.id
+    user_data[user_id]['city'] = message.text
     bot.send_message(message.chat.id, "Спасибо за информацию! Мы обработаем ваш запрос.", 
                      reply_markup=create_main_keyboard())
     user_states[user_id] = UserState.IDLE
