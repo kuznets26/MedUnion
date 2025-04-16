@@ -37,7 +37,7 @@ def ask_experience(message):
     user_id = message.from_user.id
     user_data[user_id]['experience'] = message.text
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("Больше 1 года"))
+    markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("От 1 года до 3 лет"))
     markup.add(types.KeyboardButton("Больше трех лет"))
     bot.send_message(message.chat.id, "Какой у вас опыт?", reply_markup=markup)
     bot.register_next_step_handler(message, ask_schedule)
