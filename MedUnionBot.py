@@ -54,7 +54,8 @@ def ask_schedule(message):
 def ask_rate(message):
     user_id = message.from_user.id
     user_data[user_id]['schedule'] = message.text
-    bot.send_message(message.chat.id, "Какая минимальная ставка за смену вас интересует (напишите значение в рублях)?")
+    markup = types.ReplyKeyboardRemove()
+    bot.send_message(message.chat.id, "Какая минимальная ставка за смену вас интересует (напишите значение в рублях)?", reply_markup=markup)
     bot.register_next_step_handler(message, ask_platform)
 
 def ask_platform(message):
@@ -128,7 +129,7 @@ def process_employer_data(message):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    bot.send_message(message.chat.id, "Привет! Чем могу помочь?", reply_markup=create_main_keyboard())
+    bot.send_message(message.chat.id, "Добрый день! Чем могу помочь?", reply_markup=create_main_keyboard())
     user_states[message.from_user.id] = UserState.IDLE
 
 @bot.message_handler(func=lambda message: True)
