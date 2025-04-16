@@ -39,7 +39,7 @@ def ask_experience(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("Больше 1 года"))
     markup.add(types.KeyboardButton("Больше трех лет"))
-    bot.send_message(message.chat.id, "Какой график работы вы предпочитаете?")
+    bot.send_message(message.chat.id, "Какой у вас опыт?")
     bot.register_next_step_handler(message, ask_schedule)
 
 def ask_schedule(message):
@@ -63,6 +63,16 @@ def ask_platform(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("Да"), types.KeyboardButton("Нет"))
     bot.send_message(message.chat.id, "Готовы ли вы работать через платформу?", reply_markup=markup)
+    bot.register_next_step_handler(message, ask_city_seeker)
+
+def ask_city_seeker(message):
+    user_id = message.from_user.id
+    user_data[user_id]['rate'] = message.text
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton("Москва"), types.KeyboardButton("Санкт-Петербург"))
+    markup.add(types.KeyboardButton("Новосибирск"), types.KeyboardButton("Екатеринбург"))
+    markup.add(types.KeyboardButton("Казань"), types.KeyboardButton("Нижний Новгород"))
+    bot.send_message(message.chat.id, "Из какого вы города?", reply_markup=markup)
     bot.register_next_step_handler(message, process_job_seeker_data)
 
 def process_job_seeker_data(message):
