@@ -76,13 +76,6 @@ def ask_city_seeker(message):
     bot.send_message(message.chat.id, "Из какого вы города?", reply_markup=markup)
     bot.register_next_step_handler(message, process_job_seeker_data)
 
-def process_job_seeker_data(message):
-    user_id = message.from_user.id
-    user_data[user_id]['city'] = message.text
-    bot.send_message(message.chat.id, "Спасибо за информацию! Мы обработаем ваш запрос.", 
-                     reply_markup=create_main_keyboard())
-    user_states[user_id] = UserState.IDLE
-
 
 # --- ДЛЯ РАБОТОДАТЕЛЯ ---
 
@@ -162,7 +155,7 @@ sheet_employers = client.open("MedUnion").worksheet("Employers")
 
 def process_job_seeker_data(message):
     user_id = message.from_user.id
-    user_data[user_id]['platform'] = message.text
+    user_data[user_id]['city'] = message.text
 
     try:
         sheet_job_seekers.append_row([
