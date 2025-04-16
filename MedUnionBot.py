@@ -30,19 +30,31 @@ def ask_specialization(message):
     user_states[user_id] = UserState.SEEKING_JOB
     user_data[user_id] = {}
     markup = types.ReplyKeyboardRemove()
-    bot.send_message(message.chat.id, "Какая у вас специализация и опыт работы?", reply_markup=markup)
+    bot.send_message(message.chat.id, "Какая у вас специализация?", reply_markup=markup)
+    bot.register_next_step_handler(message, ask_schedule)
+
+def ask_experience(message):
+    user_id = message.from_user.id
+    user_data[user_id]['experience'] = message.text
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton("Меньше 1 года"), types.KeyboardButton("Больше 1 года"))
+    markup.add(types.KeyboardButton("Больше трех лет"))
+    bot.send_message(message.chat.id, "Какой график работы вы предпочитаете?")
     bot.register_next_step_handler(message, ask_schedule)
 
 def ask_schedule(message):
     user_id = message.from_user.id
     user_data[user_id]['specialization'] = message.text
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton("5/2"), types.KeyboardButton("2/2"))
+    markup.add(types.KeyboardButton("Посменно"))
     bot.send_message(message.chat.id, "Какой график работы вы предпочитаете?")
     bot.register_next_step_handler(message, ask_rate)
 
 def ask_rate(message):
     user_id = message.from_user.id
     user_data[user_id]['schedule'] = message.text
-    bot.send_message(message.chat.id, "Какая минимальная ставка за смену вас интересует?")
+    bot.send_message(message.chat.id, "Какая минимальная ставка за смену вас интересует (напишите значение в рублях)?")
     bot.register_next_step_handler(message, ask_platform)
 
 def ask_platform(message):
@@ -144,8 +156,10 @@ def process_job_seeker_data(message):
     try:
         sheet_job_seekers.append_row([
             message.from_user.first_name,
+            message.from_user.last_name,
             str(user_id),
             user_data[user_id].get('specialization', ''),
+            user_data[user_id].get('experience', ''),
             user_data[user_id].get('schedule', ''),
             user_data[user_id].get('rate', ''),
             user_data[user_id].get('platform', '')
@@ -164,6 +178,7 @@ def process_employer_data(message):
     try:
         sheet_employers.append_row([
             message.from_user.first_name,
+            message.from_user.last_name,
             str(user_id),
             user_data[user_id].get('specialist_type', ''),
             user_data[user_id].get('work_schedule', ''),
